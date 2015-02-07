@@ -23,14 +23,11 @@ void setup() {
   }
   
   pinMode(PIN_SIGN, OUTPUT);
-  
-  Serial.begin(9600);  
 }
 
 // the loop function runs over and over again forever
 void loop() {
   long temperature = getTempInCelcius(PIN_TEMP);
-  //long temperature = -63;
 
   if (temperature < 0) {
     digitalWrite(PIN_SIGN, HIGH);
@@ -45,19 +42,7 @@ void loop() {
     digitalWrite(pinLED[i], getBit(absoluteTemp, i));
   }
   
-  unsigned long binTemp = getBit(absoluteTemp, 0);
-  binTemp += getBit(absoluteTemp, 1) * 10;
-  binTemp += getBit(absoluteTemp, 2) * 100;
-  binTemp += getBit(absoluteTemp, 3) * 1000;
-  binTemp += getBit(absoluteTemp, 4) * 10000;
-  binTemp += getBit(absoluteTemp, 5) * 100000;
-  
-  Serial.print(binTemp);
-  Serial.print(" <=> ");
-  Serial.print(absoluteTemp);
-  Serial.println(" C");
-  
-  delay(3000);
+  delay(10000);
 }
 
 float getTempInCelcius(int pin) {
