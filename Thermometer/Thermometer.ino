@@ -7,7 +7,7 @@
 
 #define ANALOG_TO_MV (5.0f / 1024.0f)
 
-#define PIN_TEMP 0
+#define PIN_TEMP A0
 
 #define NB_LED 6
 #define PIN_OFFSET 2
@@ -23,11 +23,15 @@ void setup() {
   }
   
   pinMode(PIN_SIGN, OUTPUT);
+  
+  Serial.begin(9600);
 }
 
 // the loop function runs over and over again forever
 void loop() {
   long temperature = getTempInCelcius(PIN_TEMP);
+  
+  Serial.println(temperature);
 
   if (temperature < 0) {
     digitalWrite(PIN_SIGN, HIGH);
@@ -42,7 +46,7 @@ void loop() {
     digitalWrite(pinLED[i], getBit(absoluteTemp, i));
   }
   
-  delay(10000);
+  delay(1000);
 }
 
 float getTempInCelcius(int pin) {
