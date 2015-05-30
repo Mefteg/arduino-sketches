@@ -1,28 +1,35 @@
-#define LED 13
+#include <VirtualWire.h>
 
-unsigned int send = 0;
+#define LED 13
+#define RECEIVER 12
+#define TRANSMITTER 11
+
+#define SERIAL_SPEED 2000
+
+char* g_value;
+
 void setup() {
+  delay(1000);
+  
   // put your setup code here, to run once:
   pinMode(LED, OUTPUT);
   
-  Serial.begin(1200); // Hardware supports up to 2400, but 1200 gives longer range
+  vw_set_ptt_inverted(true);
+  
+  vw_set_rx_pin(RECEIVER);
+  vw_set_tx_pin(TRANSMITTER);
+  
+  vw_setup(SERIAL_SPEED);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  if (send == 0)
-  {
-    digitalWrite(LED, LOW);
-    
-    send = 1;
-  }
-  else
-  {
-    digitalWrite(LED, HIGH);
-    Serial.write(15);
-    
-    send = 0;
-  }
+  g_value = "1";
+  vw_send((uint8_t *) g_value, strlen(g_value));
+  vw_wait_tx(); // Wait until the whole message is gone
+  
+  digitalWrite(LED, HIGH);
+  delay(5000);
+  digitalWrite(LED, LOW);
 
   delay(1000);
 }
